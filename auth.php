@@ -21,9 +21,9 @@
                 </form>
             </div>
             <div class="col-md-4" id="register-container">
-                <h2>Criar Contato</h2>
-                <form action="" method="POST">
-                    <input type="hidden" noem="type" value="register">
+                <h2>Criar Conta</h2>
+                <form action="<?= $BASE_URL ?>auth_process.php" method="POST">
+                    <input type="hidden" name="type" value="register">
                     <div class="form-group">
                         <label for="email">E-mail:</label>
                         <input type="text" class="form-control" id="email" name="email" placeholder="Digite aqui seu e-mail">

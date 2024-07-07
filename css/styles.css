@@ -108,7 +108,7 @@
 .card-btn:hover{
   background-color: transparent;
   color: #f5c518;
-  border: #f5c518;
+  border: 2px solid #f5c518;
 }
 
 
