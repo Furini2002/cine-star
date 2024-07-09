@@ -35,7 +35,7 @@
 
                     //criação de token e senha
                     $userToken = $user->generateToken();
-                    $finalPassword = $user->generatePassword($password);
+                    $finalpassword = $user->generatePassword($password);
 
                     $user->name = $name;
                     $user->lastname = $lastname;
