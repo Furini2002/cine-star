@@ -7,6 +7,7 @@
     require_once("db.php");
 
     $message = new Message($BASE_URL);
+    $userDao = new UserDao($conn, $BASE_URL);
 
     //VERIFICA O TIPO DE FORMULARIO
     $type = filter_input(INPUT_POST, "type");    
@@ -23,6 +24,23 @@
         
         //VERIFICAÇÃO DE DADOS MINIMOS
         if($name && $lastname && $password){
+
+            // VERIFICAR SE AS SENHAS BATEM
+            if($password === $confirmpassword){
+
+                //Verifica se o e-amil já esta cadastrado
+                if($userDao->findByEmail($email) === false){
+
+                    echo "Nenhum usuraio foi encontrado";
+
+                }else {
+                    $message->setMessage("Usuário já cadastrado, tente outro e-mail.", "error", "back");
+                }
+
+            }else{
+                //Mensagem de erro caso as senhas não forem iguais
+                $message->setMessage("As senhas não são iguais.", "error", "back");
+            }
 
             
 

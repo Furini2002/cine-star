@@ -26,11 +26,11 @@
                     <input type="hidden" name="type" value="register">
                     <div class="form-group">
                         <label for="email">E-mail:</label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Digite aqui seu e-mail">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Digite aqui seu e-mail">
                     </div>
                     <div class="form-group">
                         <label for="name">Nome:</label>
-                        <input type="email" class="form-control" id="name" name="name" placeholder="Digite aqui seu nome">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Digite aqui seu nome">
                     </div>
                     <div class="form-group">
                         <label for="lastname">Sobrenome:</label>
