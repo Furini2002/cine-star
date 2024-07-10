@@ -54,9 +54,7 @@
             }else{
                 //Mensagem de erro caso as senhas não forem iguais
                 $message->setMessage("As senhas não são iguais.", "error", "back");
-            }
-
-            
+            }            
 
         } else{
             //ENVIAR MENSAGEM DE ERRO DE DADOS FALTANTES
