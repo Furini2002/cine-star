@@ -164,6 +164,32 @@
   width: auto;
 }
 
+/*new movie*/
+.new-movie-container h1,
+.new-movie-container p{
+  text-align: center;
+}
+
+#add-movie-container{
+  text-align: left;
+}
+
+.movie-image-container{
+  height: 400px;
+  min-width: 200px;
+  background-position: center;
+  background-size: cover;
+}
+
+.page-title:after{
+  content: "";
+  width: 300px;
+  border-bottom: 2px solid #f5c518;
+  display: block;
+  margin: 0 auto;
+  padding-top: 7px;
+}
+
 /*FOOTER*/
 #footer{
     background-color: #000;
