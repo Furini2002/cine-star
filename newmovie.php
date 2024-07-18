@@ -28,7 +28,7 @@
                     <label for="length">Duração:</label>
                     <input type="text" class="form-control" id="length" name="length" placeholder="Digite a duração do filme">
                 </div>
-                <div class="fomr-group">
+                <div class="form-group">
                     <label for="category">Categoria:</label>
                     <select name="category" id="category" class="form-control">
                         <option value="">Selecione</option>
