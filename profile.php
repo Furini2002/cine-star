@@ -18,7 +18,7 @@
         if($userData->id){
             $id = $userData->id;
         } else {
-            $message->setMessage("Usuário não  encontrado", "error", "index.php");
+            $message->setMessage("Usuário não encontrado", "error", "index.php");
         }
     } else {
 

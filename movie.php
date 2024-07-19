@@ -4,6 +4,7 @@
     require_once "models/User.php";
     require_once "dao/UserDAO.php";
     require_once "dao/MovieDAO.php";
+    require_once "dao/ReviewDAO.php";
 
     //pegar o id do filme
     $id = filter_input(INPUT_GET, "id");
@@ -11,6 +12,7 @@
     $movie;
 
     $movieDao = new MovieDAO($conn, $BASE_URL);
+    $reviewDao = new ReviewDAO($conn, $BASE_URL);
 
     if(empty($id)) {
 
@@ -37,9 +39,15 @@
          if($userData->id === $movie->users_id){
             $userOwnsMovie = true;
          }
+                 
     }
 
-    //resgatar as reviws so filme
+    //resgatar as reviewa so filme
+    $movieReviews = $reviewDao->getMoviesReview($id);
+    
+
+    // Resgatar as revies do filme
+    $alredyReviewed = false;
 
     ?>
 
@@ -69,7 +77,7 @@
                     <h4>Envie sua avaliação:</h4>
                     <p class="page-descrioption">Preencha o formulario com anota e comentário sobre o filme</p>
                     <form action="<?= $BASE_URL?>review_process.php" method="POST" id="review-form">
-                        <input type="hidden" name="type" value="cerate">
+                        <input type="hidden" name="type" value="create">
                         <input type="hidden" name="movies_id" value="<?= $movie->id ?>">
                         <div class="fomr-group">
                             <label for="rating">Nota do filme:</label>
@@ -97,40 +105,12 @@
                 </div>
                 <?php endif; ?>
                 <!--comentarios-->
-                <div class="col-md-12 review">
-                    <div class="row">
-                        <div class="col-md-1">
-                            <div class="profile-image-container review-image" style="background-image: url('<?= $BASE_URL?>img/users/user.png')"></div>
-                        </div>
-                        <div class="col-md-9 author-details-container">
-                            <h4 class="author-name">
-                                <a href="#" >Teste teste</a>
-                            </h4>
-                            <p><i class="fas fa-star"></i>9</p>
-                        </div>  
-                        <div class="col-md-12">
-                            <p class="comment-title">Comentário:</p>
-                            <p>Este é o comentario do usuário</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 review">
-                    <div class="row">
-                        <div class="col-md-1">
-                            <div class="profile-image-container review-image" style="background-image: url('<?= $BASE_URL?>img/users/user.png')"></div>
-                        </div>
-                        <div class="col-md-9 author-details-container">
-                            <h4 class="author-name">
-                                <a href="#">Teste teste</a>
-                            </h4>
-                            <p><i class="fas fa-star"></i>9</p>
-                        </div>  
-                        <div class="col-md-12">
-                            <p class="comment-title">Comentário:</p>
-                            <p>Este é o comentario do usuário</p>
-                        </div>
-                    </div>
-                </div>
+                <?php foreach($movieReviews as $review): ?>
+                    <?php require "templates/user_review.php"?>
+                <?php endforeach; ?>
+                <?php if(count($movieReviews) === 0): ?>
+                    <p class="empty-list">Não há comentários para este filme ainda ...</p>
+                <?php endif; ?>
             </div>
         </div>
     </div>

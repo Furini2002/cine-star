@@ -28,8 +28,45 @@ class ReviewDao implements ReviewDAOInterface{
 
         return $reviewObject;
     }
-    public function create(Review $review){}
-    public function getMoviesReview($id){}
+    public function create(Review $review){
+
+        $stmt = $this->conn->prepare("INSERT INTO reviews(
+            rating, review, movies_id, users_id)        
+            VALUES (
+            :rating, :review, :movies_id, :users_id
+            )");
+    
+            $stmt->bindParam(":rating", $review->rating);
+            $stmt->bindParam(":review", $review->review);
+            $stmt->bindParam(":movies_id", $review->movies_id);
+            $stmt->bindParam(":users_id", $review->users_id);
+            
+    
+            $stmt->execute();
+    
+            $this->message->setMessage("Crítica adicionado com sucesso!", "success", "index.php");
+    }
+    public function getMoviesReview($id){
+
+        $reviews = [];
+
+        $stmt = $this->conn->prepare("SELECT * FROM reviews WHERE movies_id = :movies_id");
+
+        $stmt->bindParam(":movies_id", $id);
+
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+
+            $reviewsData = $stmt->fetchAll();
+
+            foreach($reviewsData as $review) {
+                $reviews[] = $this->buildReview($review);
+            }
+        }   
+        return $reviews;         
+    }        
+    
     public function hasAlreadyReviewed($id, $userId){}
     public function getRating($id){}
 
