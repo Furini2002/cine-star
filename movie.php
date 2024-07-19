@@ -35,19 +35,19 @@
     //verificar se o filme é do usuario
     $userOwnsMovie = false;
 
+    // verifica se o usuario esta logado
     if(!empty($userData)){
          if($userData->id === $movie->users_id){
             $userOwnsMovie = true;
          }
+
+        // Resgatar as revies do filme
+        $alredyReviewed = $reviewDao->hasAlreadyReviewed($id, $userData->id);
                  
     }
 
     //resgatar as reviewa so filme
-    $movieReviews = $reviewDao->getMoviesReview($id);
-    
-
-    // Resgatar as revies do filme
-    $alredyReviewed = false;
+    $movieReviews = $reviewDao->getMoviesReview($id);   
 
     ?>
 
