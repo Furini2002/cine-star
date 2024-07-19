@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-9 author-details-container">
             <h4 class="author-name">
-                <a href="#" ><?= $fullname ?></a>
+                <a href="<?= $BASE_URL?>profile.php?id=<?= $review->user->id ?>" ><?= $fullname ?></a>
             </h4>
             <p><i class="fas fa-star"></i><?= $review->rating ?></p>
         </div>  
