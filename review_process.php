@@ -1,60 +1,70 @@
 <?php
+require_once "templates/header.php";
+require_once "models/User.php";
+require_once "dao/UserDao.php";
+require_once "dao/MovieDao.php";
 
-    require_once "models/Movie.php";
-    require_once "models/Message.php";
-    require_once "models/Review.php";
-    require_once "dao/MovieDAO.php";
-    require_once "dao/UserDAO.php";
-    require_once "dao/ReviewDAO.php";
-    require_once "globals.php";
-    require_once "db.php";
+$user = new User();
+$userDao = new UserDao($conn, $BASE_URL);
+$movieDao = new MovieDAO($conn, $BASE_URL);
 
-    $message = new Message($BASE_URL);
-    $userDao = new UserDao($conn, $BASE_URL);   
-    $movieDao = new MovieDAO($conn, $BASE_URL); 
-    $reviewDao = new ReviewDAO($conn, $BASE_URL); 
+$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
-    //recebendo o tipo do formulario
-    $type = filter_input(INPUT_POST,"type");
+if (empty($id) && isset($userData->id)) {
+    $id = $userData->id;
+}
 
-    //resgatando os dados so usuário
-    $userData = $userDao->verifyToken();
-
-    //print_r($type); exit;
-
-    if($type === "create"){
-
-     //recebendo os dados do POST
-     $rating = filter_input(INPUT_POST,"rating");
-     $review = filter_input(INPUT_POST,"review");
-     $movies_id = filter_input(INPUT_POST,"movies_id");
-     $users_id = $userData->id;
-
-     $reviewObject = new Review();
-
-     $movieData = $movieDao->findById($movies_id);
-
-     //validando se o filme existe
-     if($movieData){
-
-        //verificar dados minimos
-        if(!empty($rating) && !empty($review) && !empty($movies_id)) {
-
-            $reviewObject->rating = $rating;
-            $reviewObject->review = $review;
-            $reviewObject->movies_id = $movies_id;
-            $reviewObject->users_id = $users_id;
-
-            $reviewDao->create($reviewObject);
-
-        } else {            
-            $message->setMessage("Você precisa inserir uma nota e um comentário", "error", "back");
-        }
-
-     } else {
-        $message->setMessage("Informações inválidas1!", "error", "index.php");
-     }
-        
-    }else{
-        $message->setMessage("Informações inválidas2!", "error", "index.php");
+try {
+    if (empty($id)) {
+        throw new Exception("Usuário não encontrado");
     }
+
+    $userData = $userDao->findById($id);
+
+    if (!$userData) {
+        throw new Exception("Usuário não encontrado");
+    }
+
+    $fullname = $user->getFullName($userData);
+
+    if (empty($userData->image)) {
+        $userData->image = "user.png";
+    }
+
+    $userMovies = $movieDao->getMoviesByUserId($id);
+} catch (Exception $e) {
+    $message->setMessage($e->getMessage(), "error", "index.php");
+}
+?>
+
+<div class="main-container" id="main-container">
+    <div class="col-md-8 offset-md-2">
+        <div class="row profile-container">
+            <div class="col-md-12 about-container">
+                <h1 class="page-title"><?= htmlspecialchars($fullname) ?></h1>
+                <div id="profile-image-container" class="profile-image" style="background-image: url('<?= htmlspecialchars($BASE_URL) ?>img/users/<?= htmlspecialchars($userData->image) ?>')"></div>
+                <h3 class="about-title">Sobre:</h3>
+                <?php if (!empty($userData->bio)): ?>
+                    <p class="profile-description"><?= htmlspecialchars($userData->bio) ?></p>
+                <?php else: ?>
+                    <p class="profile-description">O usuário ainda não escreveu nada aqui ...</p>
+                <?php endif; ?>
+            </div>
+            <div class="col-md-12 added-movies-container">
+                <h3>Filmes que o usuário enviou:</h3>
+                <div class="movies-container">
+                    <?php foreach ($userMovies as $movie): ?>
+                        <?php require "templates/movie_card.php"; ?>
+                    <?php endforeach; ?>
+                    <?php if (count($userMovies) === 0): ?>
+                        <p class="empty-list">O usuário ainda não adicionou filmes.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+require_once "templates/footer.php";
+?>
