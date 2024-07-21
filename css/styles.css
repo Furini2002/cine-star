@@ -363,9 +363,6 @@
   color: #999;
 }
 
-
-
-
 /*DASHBOARD*/
 #add-movie-container{
   text-align: right;  
@@ -412,8 +409,6 @@
   border: none;
 }
 
-
-
 .edit-btn{
   background-color: #0dcaf0;
   color: #fff;
@@ -435,6 +430,18 @@
   color: #dc3545;
   text-decoration: none;
 }
+
+/*search*/
+#search-title{
+  font-size: 40px;
+}
+
+#search-result,
+.back-link{
+  color:#f5c518
+}
+
+
 
 /*FOOTER*/
 #footer{
